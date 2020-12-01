@@ -1,0 +1,69 @@
+﻿*/build/*
+*~
+
+*.vs
+*.suo
+*.log
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.lib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Executables
+*.exe
+*.out
+*.app
+
+*.db
+*.cdf
+*.cache
+*.obj.enc
+*.ilk
+*.ipdb
+*.iobj
+*.resources
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.rsp
+*.pgc
+*.pgd
+*.meta
+*.tlog
+*.manifest
+*.res
+*.pch
+*.exp
+*.idb
+*.rep
+*.xdc
+*.pdb
+*_manifest.rc
+*.bsc
+*.sbr
+*.xml
+*.metagen
+*.bi
+
+
