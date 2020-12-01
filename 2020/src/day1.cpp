@@ -5,20 +5,20 @@
 #include <stdexcept>
 #include "utilities.h"
 
-int solve_day1_part1(std::vector<int> vec) {
-	for (size_t i=0; i<vec.size()-1;++i){
-		for (size_t j = i+1; j < vec.size(); ++j) {
-			if (vec[i] + vec[j] == 2020) {return vec[i] * vec[j];}
+int solve_day1_part1(const std::vector<int>& input, const int target=2020) {
+	for (size_t i=0; i< input.size()-1;++i){
+		for (size_t j = i+1; j < input.size(); ++j) {
+			if (input[i] + input[j] == target) {return input[i] * input[j];}
 		}
 	}
 	throw std::runtime_error("failed to find solution for day1 part 1");
 }
 
-int solve_day1_part2(std::vector<int> vec) {
-	for (size_t i = 0; i < vec.size() - 2; ++i) {
-		for (size_t j = i + 1; j < vec.size()-1; ++j) {
-			for (size_t k = j + 1; k < vec.size(); ++k) {
-				if (vec[i] + vec[j] + vec[k] == 2020) {	return vec[i] * vec[j]* vec[k];}
+int solve_day1_part2(const std::vector<int>& input, const int target=2020) {
+	for (size_t i = 0; i < input.size() - 2; ++i) {
+		for (size_t j = i + 1; j < input.size()-1; ++j) {
+			for (size_t k = j + 1; k < input.size(); ++k) {
+				if (input[i] + input[j] + input[k] == target) {	return input[i] * input[j]* input[k];}
 			}
 		}
 	}

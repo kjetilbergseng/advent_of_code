@@ -8,7 +8,7 @@
 
 class FileManager {
 public:
-	FileManager(const std::string& filename) {
+	FileManager(const char* filename) {
 		m_file.open(filename, std::ifstream::in);
 		if (m_file.fail()) {
 			fmt::print(fg(fmt::color::crimson), "Failed to open: {}\n", filename);
