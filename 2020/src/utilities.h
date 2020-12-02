@@ -21,12 +21,22 @@ private:
 	std::ifstream m_file;
 };
 
-std::vector<int> read_file_to_vector(const char* filename)
+inline std::vector<int> read_file_to_vector_of_ints(const char* filename)
 {
 	std::vector<int> v;
 	FileManager fm(filename);
 	for (std::string line; std::getline(fm.get(), line); ) {
 		v.push_back(std::stoi(line));
+	}
+	return v;
+}
+
+inline std::vector<std::string> read_file_to_vector_of_strings(const char* filename)
+{
+	std::vector<std::string> v;
+	FileManager fm(filename);
+	for (std::string line; std::getline(fm.get(), line); ) {
+		v.push_back(line);
 	}
 	return v;
 }
