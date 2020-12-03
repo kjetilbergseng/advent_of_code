@@ -3,7 +3,7 @@
 #include <tuple>
 #include "utilities.h"
 #include <doctest/doctest.h>
-
+#include<numeric>
 enum class policy {
 	part1,
 	part2
@@ -14,16 +14,17 @@ std::tuple<int, int, char, std::string> parse_input(std::string input) {
 	int min = std::stoi(input.substr(0, input.find('-')));
 	int max = std::stoi(input.substr(input.find('-')+1, input.find(':')- input.find('-')-2));
 	char letter = input.substr(input.find(':') - 1, 1).front();
-	std::string str= input.substr(input.find(':')+1, input.size() - input.find(':'));
+	std::string str= input.substr(input.find(':')+1, input.size() - input.find(':')-1);
 	
 	return { min,max,letter,str };
 }
 
-bool is_valid_password(int min, int max, char c, std::string password, policy p) {
-	switch (p)
+bool is_valid_password(int min, int max, char c, const std::string& password, policy pol) {
+	switch (pol)
 	{
 	case policy::part1: {
-		auto n = std::erase(password, c);
+		int n = 0;
+		for (const char& pw:password) { n += (pw == c); }
 		return (n >= min && n <= max);
 	}
 	case policy::part2:
@@ -34,11 +35,11 @@ bool is_valid_password(int min, int max, char c, std::string password, policy p)
 
 }
 
-int solve_day2(const std::vector<std::string>& input, policy p) {
+int solve_day2(const std::vector<std::string>& input, policy pol) {
 	int valid = 0;
 	for (const auto &i:input){
 		auto [min, max, letter, password]=parse_input(i);
-		valid += is_valid_password(min, max, letter, password, p);
+		valid += is_valid_password(min, max, letter, password, pol);
 	}
 	return valid;
 }

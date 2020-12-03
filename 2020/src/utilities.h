@@ -36,6 +36,7 @@ inline std::vector<std::string> read_file_to_vector_of_strings(const char* filen
 	std::vector<std::string> v;
 	FileManager fm(filename);
 	for (std::string line; std::getline(fm.get(), line); ) {
+		std::erase(line, '\r');
 		v.push_back(line);
 	}
 	return v;

@@ -4,10 +4,12 @@
 #include <stdexcept>
 #include "utilities.h"
 #include <doctest/doctest.h>
+#include <assert.h> 
 
 int solve_day1_part1(const std::vector<int>& input, const int target=2020) {
-	for (size_t i=0; i< input.size()-1;++i){
-		for (size_t j = i+1; j < input.size(); ++j) {
+	int len = static_cast<int>(input.size());
+	for (int i=0; i< len -1;++i){
+		for (int j = i+1; j < len; ++j) {
 			if (input[i] + input[j] == target) {return input[i] * input[j];}
 		}
 	}
@@ -15,9 +17,10 @@ int solve_day1_part1(const std::vector<int>& input, const int target=2020) {
 }
 
 int solve_day1_part2(const std::vector<int>& input, const int target=2020) {
-	for (size_t i = 0; i < input.size() - 2; ++i) {
-		for (size_t j = i + 1; j < input.size()-1; ++j) {
-			for (size_t k = j + 1; k < input.size(); ++k) {
+	int len = static_cast<int>(input.size());
+	for (int i = 0; i < len - 2; ++i) {
+		for (int j = i + 1; j < len -1; ++j) {
+			for (int k = j + 1; k < len; ++k) {
 				if (input[i] + input[j] + input[k] == target) {	return input[i] * input[j]* input[k];}
 			}
 		}
