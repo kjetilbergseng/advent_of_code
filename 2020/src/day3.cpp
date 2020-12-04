@@ -39,7 +39,7 @@ TEST_CASE("solve day3 part 2") {
 	fmt::print(fg(fmt::color::pale_golden_rod), "3-2 awnser: {}\n", awnser);
 }
 
-TEST_CASE("test day2 part 1") {
+TEST_CASE("test day3 part 1") {
 	auto awnser = solve_day3_part1({
 		"..##.......",
 		"#...#...#..",

@@ -5,7 +5,7 @@
 #include <vector>
 #include <fmt/core.h>
 #include <fmt/color.h>
-
+#include <regex>
 class FileManager {
 public:
 	FileManager(const char* filename) {
@@ -20,6 +20,13 @@ public:
 private:
 	std::ifstream m_file;
 };
+
+inline std::vector<std::string> split_string(std::string str, const std::regex delims) {
+	return std::vector<std::string>(
+		std::sregex_token_iterator{ str.begin(), str.end(), delims, -1 },
+		std::sregex_token_iterator{}
+	);
+}
 
 inline std::vector<int> read_file_to_vector_of_ints(const char* filename)
 {
@@ -41,3 +48,16 @@ inline std::vector<std::string> read_file_to_vector_of_strings(const char* filen
 	}
 	return v;
 }
+
+inline std::vector<std::string> read_file_to_vector_of_strings(const char* filename, const std::regex delims)
+{
+	std::vector<std::string> v;
+	FileManager fm(filename);
+	for (std::string line; std::getline(fm.get(), line); ) {
+		std::erase(line, '\r');
+		auto const vec = split_string(line, delims);
+		v.insert(v.end(), vec.cbegin(), vec.cend());
+	}
+	return v;
+}
+
