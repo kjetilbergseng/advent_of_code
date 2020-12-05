@@ -45,33 +45,35 @@ bool check_validity(const std::unordered_map<std::string, std::string>& passport
 	return lambda(passport.at(key));
 }
 
-bool check_eye_color(std::string eye_color) {
-	std::vector<const char*> vec{ "amb","blu", "brn", "gry", "grn", "hzl", "oth" };
+bool check_eye_color(const std::string& eye_color) {
+	const std::vector<const char*> vec{ "amb","blu", "brn", "gry", "grn", "hzl", "oth" };
 	for (const auto& v : vec) {
 		if (eye_color == v) { return true; };
 	}
 	return false;
 }
 
-bool check_passport_id(std::string passport_id) {
+bool check_passport_id(const std::string& passport_id) {
 	if (passport_id.size() != 9) { return false; }
-	std::string str=std::regex_replace(passport_id, std::regex{ R"([^0-9])" }, "");
+	const std::string str=std::regex_replace(passport_id, std::regex{ R"([^0-9])" }, "");
 	return str.size() == 9;
 }
 
-bool check_hair_color(std::string passport_id) {
-	if (passport_id.size() != 7 || passport_id[0]!='#') { return false; }
-	std::string str = std::regex_replace(passport_id, std::regex{ R"([^0-9a-f])" }, "");
-	return str.size() == 6;
+bool check_hair_color(const std::string& color) {
+	if (color.size() != 7 || color[0]!='#') { return false; }
+	std::smatch m;
+	std::regex_search(color, m,std::regex{ R"([0-9a-f]+)" });
+	return m[0].length()==6;
 }
 
-bool check_height(const std::string height) {
+bool check_height(const std::string& height) {
 	if (height.size() < 3) { return false; }
-	std::string str = std::regex_replace(height, std::regex{ R"([^0-9(in)(cm)])" }, "");
+
+	const std::string str = std::regex_replace(height, std::regex{ R"([^0-9(in)(cm)])" }, "");
 	if (height.size() != str.size()) { return false; }
 
 	auto fn=[&height](int min, int max)->bool {
-		std::string h = std::regex_replace(height, std::regex{ R"([^0-9])" }, "");
+		const std::string h = std::regex_replace(height, std::regex{ R"([^0-9])" }, "");
 		return (h.size()==height.size()-2)? (std::stoi(h) >= min && std::stoi(h) <= max):false;
 	};
 
@@ -104,14 +106,14 @@ int solve_day4_part2(const std::vector<std::string>& vec) {
 }
 
 TEST_CASE("test day4 part 1") {
-	auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{ R"([\s]+)" });
-	auto awnser = solve_day4_part2(vec);
+	const auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{ R"([\s]+)" });
+	const auto awnser = solve_day4_part2(vec);
 	fmt::print(fg(fmt::color::pale_golden_rod), "4-2 awnser: {}\n", awnser);
 }
 
 TEST_CASE("test day4 part 2") {
-	auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{R"([\s]+)"});
-	auto awnser = solve_day4_part1(vec);
+	const auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{R"([\s]+)"});
+	const auto awnser = solve_day4_part1(vec);
 	fmt::print(fg(fmt::color::pale_golden_rod), "4-1 awnser: {}\n", awnser);
 }
 
