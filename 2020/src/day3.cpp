@@ -31,12 +31,14 @@ size_t solve_day3_part2(std::vector<std::string> vec, std::vector<slope> slopes)
 TEST_CASE("solve day3 part 1") {
 	auto awnser = solve_day3_part1(read_file_to_vector_of_strings("day3_input.txt"), { 3,1 });
 	fmt::print(fg(fmt::color::pale_golden_rod), "3-1 awnser: {}\n", awnser);
+	CHECK(awnser == 200);
 }
 
 TEST_CASE("solve day3 part 2") {
 	auto awnser = solve_day3_part2(read_file_to_vector_of_strings("day3_input.txt"),
 		{ {1,1}, {3,1}, {5,1}, {7,1}, {1,2} });
 	fmt::print(fg(fmt::color::pale_golden_rod), "3-2 awnser: {}\n", awnser);
+	CHECK(awnser == 3737923200);
 }
 
 TEST_CASE("test day3 part 1") {

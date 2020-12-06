@@ -56,11 +56,13 @@ TEST_CASE("solve day5 part 1") {
 	const auto input=read_file_to_vector_of_strings("day5_input.txt");
 	auto max=find_max_id(input);
 	fmt::print(fg(fmt::color::pale_golden_rod), "5-1 awnser: {}\n", max);
+	CHECK(max == 901);
 }
 TEST_CASE("solve day5 part 1") {
 	const auto input = read_file_to_vector_of_strings("day5_input.txt");
 	auto seat = find_missing_seat(input);
 	fmt::print(fg(fmt::color::pale_golden_rod), "5-2 awnser: {}\n", seat);
+	CHECK(seat == 661);
 }
 
 TEST_CASE("test day5 part 1") {

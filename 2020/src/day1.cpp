@@ -52,10 +52,12 @@ TEST_CASE("solve day1") {
 		int awnser = solve_day1_part1(
 			read_file_to_vector_of_ints("day1_input.txt"));
 		fmt::print(fg(fmt::color::pale_golden_rod), "1-1 awnser: {}\n", awnser);
+		CHECK(awnser == 1006176);
 	}
 	{
 		int awnser = solve_day1_part2(
 			read_file_to_vector_of_ints("day1_input.txt"));
 		fmt::print(fg(fmt::color::pale_golden_rod), "1-2 awnser: {}\n", awnser);
+		CHECK(awnser == 199132160);
 	}
 }

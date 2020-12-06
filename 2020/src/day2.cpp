@@ -47,11 +47,13 @@ int solve_day2(const std::vector<std::string>& input, policy pol) {
 TEST_CASE("solve day2 part 1") {
 	int awnser = solve_day2(read_file_to_vector_of_strings("day2_input.txt"), policy::part1);
 	fmt::print(fg(fmt::color::pale_golden_rod), "2-1 awnser: {}\n", awnser);
+	CHECK(awnser == 625);
 }
 
 TEST_CASE("solve day2 part 1") {
 	int awnser = solve_day2(read_file_to_vector_of_strings("day2_input.txt"), policy::part2);
 	fmt::print(fg(fmt::color::pale_golden_rod), "2-2 awnser: {}\n", awnser);
+	CHECK(awnser == 391);
 }
 
 TEST_CASE("test day2 part 1") {

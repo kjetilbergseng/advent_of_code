@@ -61,3 +61,41 @@ inline std::vector<std::string> read_file_to_vector_of_strings(const char* filen
 	return v;
 }
 
+
+inline std::vector<std::string> read_strings_split_on_empty_line(const char* filename)
+{
+	std::vector<std::string> v;
+	FileManager fm(filename);
+	std::string element = "";
+	for (std::string line; std::getline(fm.get(), line); ) {
+		std::erase(line, '\r');
+		if (line == "") {
+			v.push_back(element);
+			element = "";
+		}
+		else {
+			element += line;
+		}
+	}
+	v.push_back(element);
+	return v;
+}
+
+inline std::vector<std::vector<std::string>> read_groups_of_vectors_split_on_empty_line(const char* filename)
+{
+	std::vector<std::vector<std::string>> v;
+	std::vector<std::string> u;
+	FileManager fm(filename);
+	for (std::string line; std::getline(fm.get(), line); ) {
+		std::erase(line, '\r');
+		if (line == "") {
+			v.push_back(u);
+			u.clear();
+		}
+		else {
+			u.push_back(line);
+		}
+	}
+	v.push_back(u);
+	return v;
+}

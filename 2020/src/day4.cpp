@@ -107,14 +107,16 @@ int solve_day4_part2(const std::vector<std::string>& vec) {
 
 TEST_CASE("test day4 part 1") {
 	const auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{ R"([\s]+)" });
-	const auto awnser = solve_day4_part2(vec);
-	fmt::print(fg(fmt::color::pale_golden_rod), "4-2 awnser: {}\n", awnser);
+	const auto awnser = solve_day4_part1(vec);
+	fmt::print(fg(fmt::color::pale_golden_rod), "4-1 awnser: {}\n", awnser);
+	CHECK(awnser == 264);
 }
 
 TEST_CASE("test day4 part 2") {
-	const auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{R"([\s]+)"});
-	const auto awnser = solve_day4_part1(vec);
-	fmt::print(fg(fmt::color::pale_golden_rod), "4-1 awnser: {}\n", awnser);
+	const auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{ R"([\s]+)" });
+	const auto awnser = solve_day4_part2(vec);
+	fmt::print(fg(fmt::color::pale_golden_rod), "4-2 awnser: {}\n", awnser);
+	CHECK(awnser == 224);
 }
 
 TEST_CASE("test has_key") {
