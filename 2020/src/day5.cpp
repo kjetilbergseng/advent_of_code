@@ -10,21 +10,20 @@ struct Seat {
 	size_t row;
 	size_t col;
 	size_t id;
-
 };
-inline bool operator< (const Seat& lhs, const Seat& rhs) { return lhs.id < rhs.id; }
-inline bool operator> (const Seat& lhs, const Seat& rhs) { return rhs < lhs; }
-inline bool operator<=(const Seat& lhs, const Seat& rhs) { return !(lhs > rhs); }
-inline bool operator>=(const Seat& lhs, const Seat& rhs) { return !(lhs < rhs); }
+bool operator< (const Seat& lhs, const Seat& rhs) { return lhs.id < rhs.id; }
+bool operator> (const Seat& lhs, const Seat& rhs) { return rhs < lhs; }
+bool operator<=(const Seat& lhs, const Seat& rhs) { return !(lhs > rhs); }
+bool operator>=(const Seat& lhs, const Seat& rhs) { return !(lhs < rhs); }
 
 Seat find_seat(const std::string& code) {
 	assert(code.size() > 3);
 	Seat seat{ 0,0, 0 };
 	for (size_t i = 0; i < code.size() - 3; ++i) {
-		seat.row += (code[i] == 'B') *(128 >> (i+1));
+		seat.row += (code[i] == 'B') *(128ui64 >> (i+1));
 	}
 	for (size_t i = 0; i < 3; ++i) {
-		seat.col += (code[code.size() - 3 + i] == 'R') * (8 >> (i + 1));
+		seat.col += (code[code.size() - 3 + i] == 'R') * (8ui64 >> (i + 1));
 	}
 	seat.id = seat.row * 8 + seat.col;
 	return seat;
@@ -34,6 +33,7 @@ size_t find_max_id(std::vector<std::string> vec){
 	size_t max_id = 0;
 	for (const auto& str : vec) {
 		auto seat=find_seat(str);
+		auto seat2 = seat;
 		if (seat.id > max_id) { max_id = seat.id; }
 	}
 	return max_id;
