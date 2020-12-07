@@ -60,7 +60,7 @@ TEST_CASE("solve day6 part 1") {
 	CHECK(awnser == 11);
 }
 
-TEST_CASE("solve day6 part 1") {
+TEST_CASE("solve day6 part 2") {
 	const std::vector< std::vector<std::string>> input =
 	{ {"abc"},{"a","b","c"},{"ab","ac"},{"a","a","a","a"},{"b"} };
 
