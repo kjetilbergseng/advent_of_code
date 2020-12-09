@@ -38,7 +38,7 @@ size_t solve_day7_part_1(const std::vector<Bag>& bags, std::string bag_type) {
 		found = valid_bags.size();
 		for (const auto& bag : bags) {
 			bool was_found = std::any_of(valid_bags.cbegin(), valid_bags.cend(), 
-				[&bag](std::string str) {return bag.name == str; });
+				[&bag](const std::string& str) {return bag.name == str; });
 			if (!was_found && can_hold(bag, valid_bags)) {
 				valid_bags.push_back(bag.name);
 			}

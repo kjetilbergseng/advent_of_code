@@ -4,7 +4,8 @@
 #include "utilities.h"
 #include <doctest/doctest.h>
 #include<numeric>
-#include <assert.h> 
+#include <assert.h>
+#include <limits>
 #include "day8.h"
 struct Vec2 {
 	int pos;
@@ -47,22 +48,21 @@ std::tuple<bool, int> run_program(const std::vector<std::tuple<std::string, int>
 }
 
 int solve_day8_part_2(std::vector<std::tuple<std::string, int>>& input) {
-	while (true) {
-		for (auto& [instruction, value] : input) {
-			if (instruction == "jmp") {
-				instruction = "nop";
-				auto [success, acc]=run_program(input);
-				if (success) { return acc; };
-				instruction = "jmp";
-			}
-			if (instruction == "nop") {
-				instruction = "jmp";
-				auto [success, acc] = run_program(input);
-				if (success) { return acc; };
-				instruction = "nop";
-			}
+	for (auto& [instruction, value] : input) {
+		if (instruction == "jmp") {
+			instruction = "nop";
+			auto [success, acc]=run_program(input);
+			if (success) { return acc; };
+			instruction = "jmp";
+		}
+		if (instruction == "nop") {
+			instruction = "jmp";
+			auto [success, acc] = run_program(input);
+			if (success) { return acc; };
+			instruction = "nop";
 		}
 	}
+	throw std::runtime_error("awnser to 8-2 not found");
 }
 
 std::vector<std::tuple<std::string, int>> read_input(const char* filename) {

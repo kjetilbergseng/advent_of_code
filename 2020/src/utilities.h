@@ -38,6 +38,16 @@ inline std::vector<int> read_file_to_vector_of_ints(const char* filename)
 	return v;
 }
 
+inline std::vector<long long> read_file_to_vector_of_int64(const char* filename)
+{
+	std::vector<long long> v;
+	FileManager fm(filename);
+	for (std::string line; std::getline(fm.get(), line); ) {
+		v.push_back(std::stoll(line));
+	}
+	return v;
+}
+
 inline std::vector<std::string> read_file_to_vector_of_strings(const char* filename)
 {
 	std::vector<std::string> v;

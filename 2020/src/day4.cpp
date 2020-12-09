@@ -29,7 +29,7 @@ auto read_data(const std::vector<std::string>& vec) {
 int solve_day4_part1(const std::vector<std::string>& vec) {
 	int awnser = 0;	
 	const auto passports =read_data(vec);
-	for ( const auto& passport: passports) {
+	for ( const auto & passport: passports) {
 		awnser += (passport.size() == 7);
 	}
 	return awnser;
@@ -105,18 +105,18 @@ int solve_day4_part2(const std::vector<std::string>& vec) {
 	return awnser;
 }
 
-TEST_CASE("test day4 part 1") {
+TEST_CASE("test day4") {
 	const auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{ R"([\s]+)" });
-	const auto awnser = solve_day4_part1(vec);
-	fmt::print(fg(fmt::color::pale_golden_rod), "4-1 awnser: {}\n", awnser);
-	CHECK(awnser == 264);
-}
-
-TEST_CASE("test day4 part 2") {
-	const auto vec = read_file_to_vector_of_strings("day4_input.txt", std::regex{ R"([\s]+)" });
-	const auto awnser = solve_day4_part2(vec);
-	fmt::print(fg(fmt::color::pale_golden_rod), "4-2 awnser: {}\n", awnser);
-	CHECK(awnser == 224);
+	SUBCASE("part 1") {
+		const auto awnser = solve_day4_part1(vec);
+		fmt::print(fg(fmt::color::pale_golden_rod), "4-1 awnser: {}\n", awnser);
+		CHECK(awnser == 264);
+	}
+	SUBCASE("part 2") {
+		const auto awnser = solve_day4_part2(vec);
+		fmt::print(fg(fmt::color::pale_golden_rod), "4-2 awnser: {}\n", awnser);
+		CHECK(awnser == 224);
+	}
 }
 
 TEST_CASE("test has_key") {
