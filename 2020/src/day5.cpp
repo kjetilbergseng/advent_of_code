@@ -20,10 +20,10 @@ Seat find_seat(const std::string& code) {
 	assert(code.size() > 3);
 	Seat seat{ 0,0, 0 };
 	for (size_t i = 0; i < code.size() - 3; ++i) {
-		seat.row += (code[i] == 'B') *(128ui64 >> (i+1));
+		seat.row += (code[i] == 'B') *(128ull >> (i+1));
 	}
 	for (size_t i = 0; i < 3; ++i) {
-		seat.col += (code[code.size() - 3 + i] == 'R') * (8ui64 >> (i + 1));
+		seat.col += (code[code.size() - 3 + i] == 'R') * (8ull >> (i + 1));
 	}
 	seat.id = seat.row * 8 + seat.col;
 	return seat;
@@ -33,7 +33,6 @@ size_t find_max_id(std::vector<std::string> vec){
 	size_t max_id = 0;
 	for (const auto& str : vec) {
 		auto seat=find_seat(str);
-		auto seat2 = seat;
 		if (seat.id > max_id) { max_id = seat.id; }
 	}
 	return max_id;

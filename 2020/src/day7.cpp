@@ -60,7 +60,7 @@ std::vector<Bag> parse_input(std::vector<std::string> input) {
 			if (number == "") { number = '0'; }
 			tpl.emplace_back(type,std::stoi(number));
 		}
-		bags.emplace_back(v[0], tpl);
+		bags.push_back(Bag{ v[0], tpl });
 	}
 	return bags;
 }

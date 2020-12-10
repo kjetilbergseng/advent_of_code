@@ -18,11 +18,12 @@ size_t solve_day6_part_1(const std::vector<std::string>& inputs) {
 int count_all_yes(std::string str, const size_t group_size)
 {
 	std::sort(str.begin(), str.end());
-	int awnser = 0, num_awnser = 0;
+	int awnser = 0;
+	size_t num_awnser = 0;
 	for (size_t i = 0; i < str.size(); ++i) {
 		++num_awnser;
 		awnser += (num_awnser == group_size);
-		num_awnser *= (i + 1ui64 < str.size()) && (str[i] == str[i + 1ui64]);
+		num_awnser *= (i + 1ull < str.size()) && (str[i] == str[i + 1ull]);
 	}
 	return awnser;
 }

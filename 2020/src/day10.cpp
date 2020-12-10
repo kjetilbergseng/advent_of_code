@@ -38,7 +38,7 @@ long long solve_day10_part2(std::vector<long long> input) {
 	//Note: The lambda in the transform function is not correct if there are more than four numbers in a row with a difference of 1 
 	assert(*std::max_element(v.begin(), v.end()) < 4);
 	std::transform(v.begin(), v.end(), v.begin(), [](long long n) {return nCr(n, n - 1) + nCr(n, n - 2) + 1; });
-	return std::accumulate(v.begin(), v.end(), 1ui64, std::multiplies<long long>());
+	return std::accumulate(v.begin(), v.end(), 1ll, std::multiplies<long long>());
 }
 TEST_CASE("test day10 part 1") {
 	long long awnser = solve_day10_part1(

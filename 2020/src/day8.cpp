@@ -25,7 +25,7 @@ Vec2 handle_instruction(const std::string& instruction, const int value)
 }
 
 bool out_of_range(const int pos, const size_t size) {
-	return (pos > size+1 || pos < 0);
+	return (static_cast<size_t>(pos) > size+1ull || pos < 0);
 }
 bool infinite_loop(const std::vector<int>& executed, const int pos) {
 	return (std::find(executed.cbegin(), executed.cend(), pos) != executed.cend());
@@ -35,7 +35,7 @@ std::tuple<bool, int> run_program(const std::vector<std::tuple<std::string, int>
 	Vec2 v {0, 0};
 	std::vector<int> executed;
 	while (true) {
-		if (v.pos == input.size()) {
+		if (static_cast<size_t>(v.pos) == input.size()) {
 			return { true, v.acc };
 		}
 		if (out_of_range(v.pos, input.size()) || infinite_loop(executed, v.pos)){
