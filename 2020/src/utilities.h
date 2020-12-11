@@ -109,3 +109,22 @@ inline std::vector<std::vector<std::string>> read_groups_of_vectors_split_on_emp
 	v.push_back(u);
 	return v;
 }
+
+inline std::vector<std::vector<char>> read_2D_array_of_chars(const char* filename)
+{
+	std::vector<std::vector<char>> v{'\0'};
+	std::vector<char> line;
+	FileManager fm(filename);
+	while (fm.get().good())	{
+		char c = static_cast<char>(fm.get().get());	
+		if (c == '\n') {
+			v.push_back(line);
+			line.clear();
+		}
+		else if (c != '\r') {
+			line.push_back(c);
+		}
+	}
+	v.push_back(line);
+	return v;
+}

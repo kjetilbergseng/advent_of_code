@@ -26,18 +26,14 @@ long long solve_day10_part2(std::vector<long long> input) {
 	std::vector<long long> v;
 	long long c = 0;
 	for (auto i : input) {
-		if (i == 1) {
-			c++;
-		}
-		else {
-			if (c > 1) { v.push_back(c - 1); }
-			c = 0;
-		}
+		c += (i == 1);
+		if (c > 1 && i != 1) { v.push_back(c - 1); }
+		c *= (i == 1);
 	}
 	if (c > 1) { v.push_back(c - 1); }
-	//Note: The lambda in the transform function is not correct if there are more than four numbers in a row with a difference of 1 
+	//Note: The lambda function in used in std::transform is not correct if there are more than four numbers in a row with a difference of 1 
 	assert(*std::max_element(v.begin(), v.end()) < 4);
-	std::transform(v.begin(), v.end(), v.begin(), [](long long n) {return nCr(n, n - 1) + nCr(n, n - 2) + 1; });
+	std::transform(v.begin(), v.end(), v.begin(), [](long long n) {return nCr(n, 2) + nCr(n, 1) + 1; });
 	return std::accumulate(v.begin(), v.end(), 1ll, std::multiplies<long long>());
 }
 TEST_CASE("test day10 part 1") {
