@@ -31,15 +31,15 @@ struct Waypoint {
 };
 
 struct Ship1 {
-	int x=0;
-	int y=0;
-	int rot=0;
-	int manhattan_distance() {
+	double x=0;
+	double y=0;
+	double rot=0;
+	double manhattan_distance() {
 		return abs(x) + abs(y);
 	}
 	void move_forward(int value) {
-		x += static_cast<int>(std::cos(rot * pi() / 180)) * value;
-		y += static_cast<int>(std::sin(rot * pi() / 180)) * value;
+		x +=(std::cos(rot * pi() / 180)) * value;
+		y += (std::sin(rot * pi() / 180)) * value;
 	}
 	void rotate_left(int value) {
 		rot += value;
@@ -126,45 +126,41 @@ void handle_instruction(S& ship, const Instruction& ins) {
 	}
 }
 
-int solve_day12_part1(std::vector<std::string> input) {
-	Ship1 pos;
+template<Ship S>
+double solve(S ship, std::vector<std::string> input) {
 	for (const auto& i : input) {
-		handle_instruction(pos, Instruction{ i[0], std::stoi(i.substr(1, i.size() - 1)) });
+		handle_instruction(ship, Instruction{ i[0], std::stoi(i.substr(1, i.size() - 1)) });
 	}
-	return pos.manhattan_distance();
-}
-
-double solve_day12_part2(std::vector<std::string> input) {
-	Ship2 pos;
-	for (const auto& i : input) {
-		handle_instruction(pos, Instruction{ i[0], std::stoi(i.substr(1, i.size() - 1)) });
-	}
-	return pos.manhattan_distance();
+	return ship.manhattan_distance();
 }
 
 TEST_CASE("test day12 part 1") {
-	auto awnser = solve_day12_part1({ "F10","N3","F7","R90","F11" });
-	CHECK(awnser == 25);
+	Ship1 ship;
+	auto awnser = solve(ship, { "F10","N3","F7","R90","F11" });
+	CHECK(awnser == doctest::Approx(25.0));
 }
 
 TEST_CASE("test day12 part 2") {
-	auto awnser = solve_day12_part2({ "F10","N3","F7","R90","F11" });
+	Ship2 ship;
+	auto awnser = solve(ship, { "F10","N3","F7","R90","F11" });
 	CHECK(awnser == doctest::Approx(286.0));
 
-	awnser = solve_day12_part2({ "F10","R180","F10","L180", "F10" });
+	awnser = solve(ship, { "F10","R180","F10","L180", "F10" });
 	CHECK(awnser == doctest::Approx(110.0));
 }
 
 TEST_CASE("solve day12") {
 	auto input = read_file_to_vector_of_strings("day12_input.txt");
 	SUBCASE("part1") {
-		const auto awnser = solve_day12_part1(input);
-		fmt::print(fg(fmt::color::pale_golden_rod), "12-1 awnser: {}\n", awnser);
-		CHECK(awnser == 441);
+		Ship1 ship;
+		const auto awnser = solve(ship,input);
+		fmt::print(fg(fmt::color::pale_golden_rod), "12-1 awnser: {:g}\n", awnser);
+		CHECK(awnser == doctest::Approx(441.0));
 	}
 	SUBCASE("part2") {
-		const auto awnser = solve_day12_part2(input);
-		fmt::print(fg(fmt::color::pale_golden_rod), "12-2 awnser: {}\n", awnser);
+		Ship2 ship;
+		const auto awnser = solve(ship, input);
+		fmt::print(fg(fmt::color::pale_golden_rod), "12-2 awnser: {:g}\n", awnser);
 		CHECK(awnser == doctest::Approx(40014.0));
 	}
 }
