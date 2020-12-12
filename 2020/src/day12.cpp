@@ -23,6 +23,7 @@ requires(T & a, int b)
 	{a.move_north(b)};
 	{a.move_west(b)};
 	{a.move_south(b)};
+	{a.manhattan_distance()};
 };
 
 struct Waypoint {
@@ -41,24 +42,12 @@ struct Ship1 {
 		x +=(std::cos(rot * pi() / 180)) * value;
 		y += (std::sin(rot * pi() / 180)) * value;
 	}
-	void rotate_left(int value) {
-		rot += value;
-	}
-	void rotate_right(int value) {
-		rot -= value;
-	}
-	void move_east(int value) {
-		x += value;
-	}
-	void move_north(int value) {
-		y += value;
-	}
-	void move_west(int value) {
-		x -= value;
-	}
-	void move_south(int value) {
-		y -= value;
-	}
+	void rotate_left(int value) { rot += value; }
+	void rotate_right(int value) { rot -= value; }
+	void move_east(int value) { x += value; }
+	void move_west(int value) { x -= value; }
+	void move_north(int value) { y += value; }
+	void move_south(int value) { y -= value; }
 };
 
 struct Ship2 {
@@ -72,28 +61,17 @@ struct Ship2 {
 		x += wp.x * value;
 		y += wp.y * value;
 	}
-
 	void rotate_left(int value) {
 		double angle = value * pi() / 180.0;
 		double tmp_x = wp.x * std::cos(angle) - wp.y * sin(angle);
 		wp.y = wp.x * std::sin(angle) + wp.y * cos(angle);
 		wp.x = tmp_x;
 	}
-	void rotate_right(int value) {
-		rotate_left(360 - value % 360);
-	}
-	void move_east(int value) {
-		wp.x += value;
-	}
-	void move_north(int value) {
-		wp.y += value;
-	}
-	void move_west(int value) {
-		wp.x -= value;
-	}
-	void move_south(int value) {
-		wp.y -= value;
-	}
+	void rotate_right(int value) { rotate_left(360 - value % 360); }
+	void move_east(int value) {	wp.x += value; }
+	void move_west(int value) { wp.x -= value; }
+	void move_north(int value) { wp.y += value;	}
+	void move_south(int value) { wp.y -= value;	}
 };
 
 struct Instruction {
@@ -135,31 +113,27 @@ double solve(S ship, std::vector<std::string> input) {
 }
 
 TEST_CASE("test day12 part 1") {
-	Ship1 ship;
-	auto awnser = solve(ship, { "F10","N3","F7","R90","F11" });
+	auto awnser = solve(Ship1{}, { "F10","N3","F7","R90","F11" });
 	CHECK(awnser == doctest::Approx(25.0));
 }
 
 TEST_CASE("test day12 part 2") {
-	Ship2 ship;
-	auto awnser = solve(ship, { "F10","N3","F7","R90","F11" });
+	auto awnser = solve(Ship2{}, { "F10","N3","F7","R90","F11" });
 	CHECK(awnser == doctest::Approx(286.0));
 
-	awnser = solve(ship, { "F10","R180","F10","L180", "F10" });
+	awnser = solve(Ship2{}, { "F10","R180","F10","L180", "F10" });
 	CHECK(awnser == doctest::Approx(110.0));
 }
 
 TEST_CASE("solve day12") {
 	auto input = read_file_to_vector_of_strings("day12_input.txt");
 	SUBCASE("part1") {
-		Ship1 ship;
-		const auto awnser = solve(ship,input);
+		const auto awnser = solve(Ship1{},input);
 		fmt::print(fg(fmt::color::pale_golden_rod), "12-1 awnser: {:g}\n", awnser);
 		CHECK(awnser == doctest::Approx(441.0));
 	}
 	SUBCASE("part2") {
-		Ship2 ship;
-		const auto awnser = solve(ship, input);
+		const auto awnser = solve(Ship2{}, input);
 		fmt::print(fg(fmt::color::pale_golden_rod), "12-2 awnser: {:g}\n", awnser);
 		CHECK(awnser == doctest::Approx(40014.0));
 	}
