@@ -81,26 +81,24 @@ struct Instruction {
 
 template<Ship S>
 void handle_instruction(S& ship, const Instruction& ins) {
-	if (ins.action == 'F') {
-		ship.move_forward(ins.value);
-	}
-	else if (ins.action == 'R') {
-		ship.rotate_right(ins.value);
-	}
-	else if (ins.action == 'L') {
-		ship.rotate_left(ins.value);
-	}
-	else if (ins.action == 'E') {
-		ship.move_east(ins.value);
-	}
-	else if (ins.action == 'N') {
-		ship.move_north(ins.value);
-	}
-	else if (ins.action == 'W') {
-		ship.move_west(ins.value);
-	}
-	else if (ins.action == 'S') {
-		ship.move_south(ins.value);
+	switch (ins.action)
+	{
+	case 'F':
+		ship.move_forward(ins.value); break;
+	case 'R':
+		ship.rotate_right(ins.value); break;
+	case 'L':
+		ship.rotate_left(ins.value); break;
+	case 'E':
+		ship.move_east(ins.value); break;
+	case 'N':
+		ship.move_north(ins.value); break;
+	case 'W':
+		ship.move_west(ins.value); break;
+	case 'S':
+		ship.move_south(ins.value); break;
+	default:
+		throw std::runtime_error("invalid instruction in day 12");
 	}
 }
 
