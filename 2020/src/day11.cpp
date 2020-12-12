@@ -8,7 +8,6 @@
 #include <doctest/doctest.h>
 #include <assert.h>
 #include <fmt/ranges.h>
-#include <functional>
 
 bool operator==(std::vector<std::vector<char>> lhs, std::vector<std::vector<char>> rhs) {
 	if (lhs.size() != rhs.size()) { return false; }
@@ -31,34 +30,39 @@ bool is_in_range(int row, int col, const std::vector<std::vector<char>>& input) 
 		);
 }
 
-int occupied_adjacent(int row, int col, const std::vector<std::vector<char>>& input) {
-	char sum = 0;
-	for (int i = -1; i <= 1; ++i) {
-		for (int j = -1; j <= 1; ++j) {
-			if ((i != 0 || j != 0) && is_in_range(i + row, j + col, input)) {
-				sum += (input[row + i][col + j] == '#');
-			}
+template<typename T>
+void loop_over_grid(int size, T function) {
+	for (int i = -size; i <= size; ++i) {
+		for (int j = -size; j <= size; ++j) {
+			function(i,j);
 		}
 	}
+}
+
+int occupied_adjacent(int row, int col, const std::vector<std::vector<char>>& input) {
+	char sum = 0;
+	loop_over_grid(1, [&](int i, int j) {
+		if ((i != 0 || j != 0) && is_in_range(i + row, j + col, input)) {
+			sum += (input[row + i][col + j] == '#');
+		}
+	});
 	return sum;
 }
 
 int occupied_seen(int row, int col, const std::vector<std::vector<char>>& input) {
 	char sum = 0;
-	for (int i = -1; i <= 1; ++i) {
-		for (int j = -1; j <= 1; ++j) {
-			int n = 1;
-			while ((i != 0 || j != 0) && is_in_range(n*i + row, n*j+col, input)) {
-				if (input[row + n * i][col + n * j] == '.') {
-					++n;
-				}
-				else {
-					sum += (input[row + n * i][col + n * j] == '#');
-					break;
-				}
+	loop_over_grid(1, [&](int i, int j) {
+		int n = 1;
+		while ((i != 0 || j != 0) && is_in_range(n * i + row, n * j + col, input)) {
+			if (input[row + n * i][col + n * j] == '.') {
+				++n;
+			}
+			else {
+				sum += (input[row + n * i][col + n * j] == '#');
+				break;
 			}
 		}
-	}
+	});
 	return sum;
 }
 
