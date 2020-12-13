@@ -52,6 +52,8 @@ add_executable(
     "src/day11.h"
     "src/day12.cpp"
     "src/day12.h"
+    "src/day13.cpp"
+    "src/day13.h"
     "src/utilities.h"
     )
 target_link_libraries("${PROJECT_NAME}" ${CONAN_LIBS})

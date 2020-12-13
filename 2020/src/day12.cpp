@@ -13,9 +13,7 @@
 constexpr double pi() { return 3.14159265358979323846; }
 
 template <typename T>
-concept Ship =
-requires(T & a, int b)
-{
+concept Ship = requires(T & a, int b) {
 	{a.move_forward(b)};
 	{a.rotate_left(b)};
 	{a.rotate_right(b)};
@@ -31,10 +29,12 @@ struct Waypoint {
 	double y;
 };
 
-struct Ship1 {
+class Ship1 {
+private:
 	double x=0;
 	double y=0;
 	double rot=0;
+public:
 	double manhattan_distance() {
 		return abs(x) + abs(y);
 	}
@@ -50,10 +50,12 @@ struct Ship1 {
 	void move_south(int value) { y -= value; }
 };
 
-struct Ship2 {
+class Ship2 {
+private:
 	double x=0;
 	double y=0;
 	Waypoint wp{ 10,1 };
+public:
 	double manhattan_distance() {
 		return abs(x) + abs(y);
 	}
