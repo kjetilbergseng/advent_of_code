@@ -34,7 +34,7 @@ int solve_day_13_part1(int target, std::vector<int> busses) {
 }
 
 size_t solve_day_13_part2(const std::vector<Vec2>& busses) {
-	size_t n = 1, m = 1, l = 0, prev = 0;
+	size_t n = 1, dn = 1, i_curr = 0;
 	while (true) {
 		const size_t x = busses[0].val * n;
 		for (size_t i = 1; i < busses.size();++i) {
@@ -42,20 +42,16 @@ size_t solve_day_13_part2(const std::vector<Vec2>& busses) {
 				break;
 			}
 			else {
-				if (l < i) {
-					prev = x;
-					l=i;
+				if (i == busses.size() - 1) {
+					return x - busses[0].pos;
 				}
-				else if (l == i) {
-					m = (x- prev)/ busses[0].val;
-					prev = x;
+				else if (i_curr < i) {
+					i_curr++;
+					dn = std::lcm(dn, busses[i_curr].val);
 				}
-			}
-			if (i == busses.size() - 1) {
-				return x - busses[0].pos;
 			}
 		}
-		n += m;
+		n += dn;
 	};
 	throw std::runtime_error("failed to find solution to day 13 part 2");
 }
@@ -66,9 +62,9 @@ std::vector<Vec2> get_input_vector(std::vector<std::string> vec) {
 	size_t i = 0;
 	std::transform(vec.cbegin(), vec.cend(), std::back_inserter(busses),
 		[&i](const std::string& str) { ++i;  return (str == "x") ? Vec2{ i-1,0ull } : Vec2{ i-1, std::stoull(str) }; });
-
 	std::erase_if(busses, [](const Vec2& bus) {return bus.val == 0; });
 	std::sort(busses.begin(), busses.end(), std::greater<Vec2>());
+
 	return busses;
 }
 
@@ -92,8 +88,7 @@ TEST_CASE("test day13 part 2") {
 
 TEST_CASE("solve day13") {
 	auto input = read_file_to_vector_of_strings("day13_input.txt");
-	SUBCASE("part1") {
-		
+	SUBCASE("part1") {		
 		auto vec = split_string(input[1], std::regex{ "," });
 		auto it = std::remove_if(vec.begin(), vec.end(), [](const std::string& str) {return str == "x"; });
 		std::vector<int> busses;
