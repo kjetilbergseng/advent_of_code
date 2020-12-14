@@ -34,26 +34,16 @@ int solve_day_13_part1(int target, std::vector<int> busses) {
 }
 
 size_t solve_day_13_part2(const std::vector<Vec2>& busses) {
-	size_t n = 1, dn = 1, i_curr = 0;
-	while (true) {
-		const size_t x = busses[0].val * n;
-		for (size_t i = 1; i < busses.size();++i) {
-			if ((x + busses[i].pos- busses[0].pos) % busses[i].val != 0) {
-				break;
-			}
-			else {
-				if (i == busses.size() - 1) {
-					return x - busses[0].pos;
-				}
-				else if (i_curr < i) {
-					i_curr++;
-					dn = std::lcm(dn, busses[i_curr].val);
-				}
-			}
+	size_t n = 1, dn = 1, i = 0, x = 0;
+	while (i< busses.size()-1) {
+		x = busses[0].val * n;
+		if ((x + busses[i + 1].pos- busses[0].pos) % busses[i + 1].val == 0) {
+			++i;
+			dn = std::lcm(dn, busses[i].val);
 		}
 		n += dn;
 	};
-	throw std::runtime_error("failed to find solution to day 13 part 2");
+	return x - busses[0].pos;
 }
 
 

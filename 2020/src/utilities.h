@@ -20,7 +20,9 @@ public:
 private:
 	std::ifstream m_file;
 };
-
+inline std::string strip_non_numeric(const std::string& str) {
+	return std::regex_replace(str, std::regex{ R"([^0-9])" }, "");
+}
 inline std::vector<std::string> split_string(std::string str, const std::regex delims) {
 	return std::vector<std::string>(
 		std::sregex_token_iterator{ str.begin(), str.end(), delims, -1 },
