@@ -46,42 +46,58 @@ std::vector<Data_block> strings_to_data_blocks(const std::vector<std::string>& s
 	return blocks;
 }
 
+uint64_t mask_from_x_positions(const std::string& mask)
+{
+	auto m = std::regex_replace(mask, std::regex{ "[0-9]" }, "0");
+	m = std::regex_replace(m, std::regex{ "X|x" }, "1");
+	return std::bitset<36>(m).to_ullong();
+}
+
+uint64_t count_combinations(const std::string& mask)
+{
+	uint64_t combinations = std::count(mask.cbegin(), mask.cend(), 'X');
+	return static_cast<uint64_t>(std::pow(2, combinations));
+}
+
+uint64_t create_combination(const uint64_t i, const std::string& mask)
+{
+	auto floating_bits = std::bitset<36>(i).to_string();
+	auto fixed_bits = std::bitset<36>(positive_mask_form_string(mask)).to_string();
+	for (uint64_t n = 0, j = 0; auto & c : fixed_bits) {
+		if (mask[j] == 'X') {
+			++n;
+			c = floating_bits[floating_bits.size() - n];
+		}
+		++j;
+	}
+	return std::bitset<36>(fixed_bits).to_ullong();
+}
+
+uint64_t get_address_combinations( const uint64_t& adr, const uint64_t& mask, const uint64_t& x_mask)
+{
+	uint64_t mask_adr = (adr | mask) & std::bitset<36>(x_mask).flip().to_ullong();
+	return mask_adr | (mask & x_mask);
+}
+
 std::vector<std::pair<uint64_t, uint64_t>> strings_to_data_part2(const std::vector<std::string>& strings) {
 	std::vector<std::pair<uint64_t, uint64_t>> data;
 	std::vector<uint64_t> masks;
-	uint64_t mask=0;
+	uint64_t x_mask=0;
 	for (const auto& str : strings) {
 		auto v = split_string(str, std::regex(" = "));
 		
 		if (v[0] == "mask") {
 			masks.clear();
-			auto m = std::regex_replace(v[1], std::regex{ "[0-9]" }, "0");
-			m = std::regex_replace(m, std::regex{ "X|x" }, "1");
-			mask = std::bitset<36>(m).to_ullong();
-			uint64_t combinations = std::count(v[1].cbegin(), v[1].cend(), 'X');
-			combinations = static_cast<uint64_t>(std::pow(2, combinations));
-			for (uint64_t i = 0; i < combinations; ++i) {
-				auto floating_bits = std::bitset<36>(i).to_string();
-				auto fixed_bits = std::bitset<36>(positive_mask_form_string(v[1])).to_string();
-				for (uint64_t n = 0, j = 0; auto & c : fixed_bits) {
-					if (v[1][j] == 'X') {
-						++n;
-						c = floating_bits[floating_bits.size()-n];			
-					}
-					++j;
-				}
-				masks.emplace_back(std::bitset<36>(fixed_bits).to_ullong());
+			x_mask = mask_from_x_positions(v[1]);
+			for (uint64_t i = 0; i < count_combinations(v[1]); ++i) {
+				masks.emplace_back(create_combination(i, v[1]));
 			}
-
 		}
 		else {
-			std::vector<uint64_t> adresses;
-			uint64_t adr = std::stoull(strip_non_numeric(v[0]));
+			uint64_t address = std::stoull(strip_non_numeric(v[0]));
 			for (const auto m : masks) {
-				uint64_t mask_adr = (adr | m) & std::bitset<36>(mask).flip().to_ullong();
-				mask_adr = mask_adr|(m & mask);
 				data.emplace_back(
-					mask_adr,
+					get_address_combinations(address, m, x_mask),
 					std::stoull(strip_non_numeric(v[1]))
 				);
 			}
