@@ -12,8 +12,8 @@
 #include <cmath>
 
 struct Vec2 {
-	size_t pos;
-	size_t val;
+	uint64_t pos;
+	uint64_t val;
 };
 bool operator< (const Vec2& lhs, const Vec2& rhs) { return lhs.val < rhs.val; }
 bool operator> (const Vec2& lhs, const Vec2& rhs) { return rhs < lhs; }
@@ -33,8 +33,8 @@ int solve_day_13_part1(int target, std::vector<int> busses) {
 	return min*id;
 }
 
-size_t solve_day_13_part2(const std::vector<Vec2>& busses) {
-	size_t n = 1, dn = 1, i = 0, x = 0;
+uint64_t solve_day_13_part2(const std::vector<Vec2>& busses) {
+	uint64_t n = 1, dn = 1, i = 0, x = 0;
 	while (i< busses.size()-1) {
 		x = busses[0].val * n;
 		if ((x + busses[i + 1].pos- busses[0].pos) % busses[i + 1].val == 0) {
@@ -45,15 +45,15 @@ size_t solve_day_13_part2(const std::vector<Vec2>& busses) {
 	};
 	return x - busses[0].pos;
 }
-
-
+ 
 std::vector<Vec2> get_input_vector(std::vector<std::string> vec) {
 	std::vector<Vec2> busses;
-	size_t i = 0;
 	std::transform(vec.cbegin(), vec.cend(), std::back_inserter(busses),
-		[&i](const std::string& str) { ++i;  return (str == "x") ? Vec2{ i-1,0ull } : Vec2{ i-1, std::stoull(str) }; });
+		[i = 0ull ](const std::string& str) mutable { 
+		++i;  
+		return (str == "x") ? Vec2{ i-1,0ull } : Vec2{ i-1, std::stoull(str) }; 
+	});
 	std::erase_if(busses, [](const Vec2& bus) {return bus.val == 0; });
-	std::sort(busses.begin(), busses.end(), std::greater<Vec2>());
 
 	return busses;
 }
