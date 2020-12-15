@@ -73,7 +73,7 @@ uint64_t create_combination(const uint64_t i, const std::string& mask)
 	return std::bitset<36>(fixed_bits).to_ullong();
 }
 
-uint64_t get_address_combinations( const uint64_t& adr, const uint64_t& mask, const uint64_t& x_mask)
+uint64_t get_address_combination( const uint64_t& adr, const uint64_t& mask, const uint64_t& x_mask)
 {
 	uint64_t mask_adr = (adr | mask) & std::bitset<36>(x_mask).flip().to_ullong();
 	return mask_adr | (mask & x_mask);
@@ -81,23 +81,23 @@ uint64_t get_address_combinations( const uint64_t& adr, const uint64_t& mask, co
 
 std::vector<std::pair<uint64_t, uint64_t>> strings_to_data_part2(const std::vector<std::string>& strings) {
 	std::vector<std::pair<uint64_t, uint64_t>> data;
-	std::vector<uint64_t> masks;
+	std::vector<uint64_t> mask_combinations;
 	uint64_t x_mask=0;
 	for (const auto& str : strings) {
 		auto v = split_string(str, std::regex(" = "));
 		
 		if (v[0] == "mask") {
-			masks.clear();
+			mask_combinations.clear();
 			x_mask = mask_from_x_positions(v[1]);
 			for (uint64_t i = 0; i < count_combinations(v[1]); ++i) {
-				masks.emplace_back(create_combination(i, v[1]));
+				mask_combinations.emplace_back(create_combination(i, v[1]));
 			}
 		}
 		else {
 			uint64_t address = std::stoull(strip_non_numeric(v[0]));
-			for (const auto m : masks) {
+			for (const auto m : mask_combinations) {
 				data.emplace_back(
-					get_address_combinations(address, m, x_mask),
+					get_address_combination(address, m, x_mask),
 					std::stoull(strip_non_numeric(v[1]))
 				);
 			}
@@ -113,7 +113,7 @@ void add_data_to_memory(std::unordered_map<uint64_t, uint64_t>& memory, const Da
 	}
 }
 
-uint64_t solve_day13_part1(const std::vector<Data_block>& blocks) {
+uint64_t solve_day14_part1(const std::vector<Data_block>& blocks) {
 	std::unordered_map<uint64_t, uint64_t> memory;
 	for (const auto& block : blocks) {
 		add_data_to_memory(memory, block);
@@ -122,7 +122,7 @@ uint64_t solve_day13_part1(const std::vector<Data_block>& blocks) {
 		[](auto lhs, auto rhs) {return lhs + rhs.second; });
 }
 
-uint64_t solve_day13_part2(const std::vector<std::pair<uint64_t, uint64_t>>& data) {
+uint64_t solve_day14_part2(const std::vector<std::pair<uint64_t, uint64_t>>& data) {
 	std::unordered_map<uint64_t, uint64_t> memory;
 	for (const auto& d : data) {
 		memory[d.first] = d.second;
@@ -131,7 +131,23 @@ uint64_t solve_day13_part2(const std::vector<std::pair<uint64_t, uint64_t>>& dat
 		[](auto lhs, auto rhs) {return lhs + rhs.second; });
 }
 
-TEST_CASE("test day13 part2") {
+TEST_CASE("solve day14") {
+	const auto input = read_file_to_vector_of_strings("day14_input.txt");
+	SUBCASE("part1") {
+		const auto blocks = strings_to_data_blocks(input);
+		const auto awnser = solve_day14_part1(blocks);
+		fmt::print(fg(fmt::color::pale_golden_rod), "14-1 awnser: {}\n", awnser);
+		CHECK(awnser == 9879607673316);
+	}
+	SUBCASE("part2") {
+		const auto data = strings_to_data_part2(input);
+		const auto awnser = solve_day14_part2(data);
+		fmt::print(fg(fmt::color::pale_golden_rod), "14-2 awnser: {}\n", awnser);
+		CHECK(awnser == 3435342392262);
+	}
+}
+
+TEST_CASE("test day14 part2") {
 	const std::vector<std::string> input = {
 		"mask = 000000000000000000000000000000X1001X",
 		"mem[42] = 100",
@@ -139,24 +155,8 @@ TEST_CASE("test day13 part2") {
 		"mem[26] = 1"
 	};
 	const auto data = strings_to_data_part2(input);
-	const auto awnser = solve_day13_part2(data);
+	const auto awnser = solve_day14_part2(data);
 	CHECK(awnser == 208);
-}
-
-TEST_CASE("solve day13") {
-	const auto input = read_file_to_vector_of_strings("day14_input.txt");
-	SUBCASE("part1") {
-		const auto blocks = strings_to_data_blocks(input);
-		const auto awnser = solve_day13_part1(blocks);
-		fmt::print(fg(fmt::color::pale_golden_rod), "14-1 awnser: {}\n", awnser);
-		CHECK(awnser == 9879607673316);
-	}
-	SUBCASE("part2") {
-		const auto data = strings_to_data_part2(input);
-		const auto awnser = solve_day13_part2(data);
-		fmt::print(fg(fmt::color::pale_golden_rod), "14-2 awnser: {}\n", awnser);
-		CHECK(awnser == 3435342392262);
-	}
 }
 
 TEST_CASE("test day13 part1") {
@@ -167,7 +167,7 @@ TEST_CASE("test day13 part1") {
 		"mem[8] = 0"
 	};
 	const auto blocks = strings_to_data_blocks(input);
-	const auto awnser = solve_day13_part1(blocks);
+	const auto awnser = solve_day14_part1(blocks);
 	CHECK(awnser == 165);
 }
 
