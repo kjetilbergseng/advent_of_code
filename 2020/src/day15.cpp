@@ -27,7 +27,7 @@ uint64_t solve_day15(std::vector<uint64_t> input, uint64_t repeat_times) {
 		else {
 			map[last] = i;
 			last = 0;
-		}	
+		}
 	}
 	return last;
 }
@@ -39,17 +39,16 @@ TEST_CASE("solve day15") {
 		fmt::print(fg(fmt::color::pale_golden_rod), "15-1 awnser: {}\n", awnser);
 		CHECK(awnser == 447);
 	}
-	SUBCASE("part2") {
-		const auto awnser = solve_day15(input, 30000000);
-		fmt::print(fg(fmt::color::pale_golden_rod), "15-2 awnser: {}\n", awnser);
-		CHECK(awnser == 11721679);
-	}
+	////Comment out to reduce runtime
+	//SUBCASE("part2") {
+	//	const auto awnser = solve_day15(input, 30000000);
+	//	fmt::print(fg(fmt::color::pale_golden_rod), "15-2 awnser: {}\n", awnser);
+	//	CHECK(awnser == 11721679);
+	//}
 }
 
 TEST_CASE("test day15 part1") {
 	const std::vector<uint64_t> input = {0,3,6};
 	const auto awnser = solve_day15(input, 2020);
-	CHECK(awnser == 436);
+	CHECK(awnser== 436);
 }
-
-

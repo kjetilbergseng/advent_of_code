@@ -106,7 +106,6 @@ std::vector<std::pair<uint64_t, uint64_t>> strings_to_data_part2(const std::vect
 	return data;
 }
 
-
 void add_data_to_memory(std::unordered_map<uint64_t, uint64_t>& memory, const Data_block& block) {
 	for (auto& i : block.data) {
 		memory[i.first] = block.positive_mask | i.second & ~block.negative_mask;
