@@ -7,7 +7,7 @@
 #include <unordered_map >
 #include <bitset>
 #include <cmath>
-#pragma warning(push, 0) 
+#pragma warning(push, 1) 
 #include <fmt/core.h>
 #include <fmt/ranges.h>
 #include <doctest/doctest.h>
